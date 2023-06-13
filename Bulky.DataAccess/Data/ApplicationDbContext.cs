@@ -1,8 +1,9 @@
-﻿using BulkyWeb.Models;
+﻿
+using Bulky.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client.Extensibility;
 
-namespace BulkyWeb.Data
+namespace Bulky.DataAccess.Data
 {
     public class ApplicationDbContext: DbContext
     {
