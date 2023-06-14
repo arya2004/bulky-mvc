@@ -108,33 +108,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
             
         }
-           public IActionResult Delete(int? id)
-        {
-            if(id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Product p = _unitOfWork.Product.Get(u =>u.Id == id);
-            if(p == null)
-            {
-                return NotFound();
-            }
-            return View(p);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
-        {
-            Product? p = _unitOfWork.Product.Get(u => u.Id == id);
-            if(p == null)
-            {
-                return NotFound();
-
-            }
-            _unitOfWork.Product.Remove(p);
-            _unitOfWork.Save();
-            TempData["success"] = "success del-yeet prod";
-            return RedirectToAction("Index", "Product");
-        }
+     
 
 
         #region API CALLS
@@ -144,6 +118,23 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             List<Product> prodList = _unitOfWork.Product.GetAll(includeProps: "Category").ToList();
             return Json(new {data = prodList});
+        }
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {   
+            var obj = _unitOfWork.Product.Get(u => u.Id==id);
+            if(obj == null)
+            {
+                return Json(new { success = false, message = "Erorr whieldel " });
+            }
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, obj.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _unitOfWork.Product.Remove(obj);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "del-yeeted " });
         }
         #endregion
     }
