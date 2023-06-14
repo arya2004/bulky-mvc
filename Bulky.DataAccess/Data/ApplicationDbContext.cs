@@ -1,11 +1,13 @@
 ﻿
 using Bulky.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client.Extensibility;
 
 namespace Bulky.DataAccess.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext: IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -16,7 +18,9 @@ namespace Bulky.DataAccess.Data
         //add-migration AddCategoryTableToDb in nuget console, adds migrations 
         //after creation of migration, update-database in nuget
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {   
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Product>().HasData(
                 new Product
                 {
