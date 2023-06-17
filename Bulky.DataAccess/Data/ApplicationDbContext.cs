@@ -15,6 +15,7 @@ namespace Bulky.DataAccess.Data
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
         //add-migration AddCategoryTableToDb in nuget console, adds migrations 
         //after creation of migration, update-database in nuget
         protected override void OnModelCreating(ModelBuilder modelBuilder)
